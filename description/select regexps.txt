@@ -1,0 +1,16 @@
+select dummy, dummy as dummy2, dummy dummy3 from dual
+
+select dummy, 'test' from dual
+
+
+select_statement
+SELECT <columns> FROM <tables>
+
+column
+\w+( (AS )?\w+)?,?(\s|\n|\r)*
+
+tables
+\w+( (AS )?\w+)?,?(\s|\n|\r)*
+
+
+SELECT (\w+( (AS )?\w+)?,(\s|\n|\r)*)*\w+( (AS )?\w+)? FROM (\w+( (AS )?\w+)?,(\s|\n|\r)*)*\w+( (AS )?\w+)?

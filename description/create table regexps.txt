@@ -1,0 +1,52 @@
+create_table
+CREATE TABLE table_name (<relational_properties>)
+
+relational_properties
+<column_definition>,
+
+column_definition
+<column> <datatype> (DEFAULT <expr>)?
+
+Simple-column-Name [ DataType ]
+    [ Column-level-constraint ]*
+    [ [ WITH ] DEFAULT DefaultConstantExpression
+       | generated-column-spec 
+       | generation-clause 
+    ]
+    [ Column-level-constraint ]*
+
+
+generation-clause 
+GENERATED ALWAYS AS ( value-expression )
+
+
+
+create table X (
+col1 number,
+col2 varchar(256),
+col3 GENERATED ALWAYS AS ( decode(col1, 0, 1, null) ),
+col4 GENERATED ALWAYS AS ( decode(col1, decode(0, 1), 1, null) )
+)
+
+
+create table X (
+col1 number,
+col2 varchar
+)
+
+
+create_table
+CREATE TABLE (\w+) \((\n|\r)* <columns>\)
+
+column
+\w+ \w+(\(\d+\))?,?(\n|\r)*
+
+generated column
+\w+ GENERATED ALWAYS AS \(.*\),?(\n|\r)*
+
+
+CREATE TABLE (\w+) \((\n|\r)*(\w+ \w+,?(\n|\r)*)+\)
+CREATE TABLE (\w+) \((\n|\r)*(\w+ \w+(\(\d+\))?,?(\n|\r)*|\w+ GENERATED ALWAYS AS \(.*\),?(\n|\r)*)+\)
+
+
+CREATE[\s\n\r]+TABLE[\s\n\r]+(\w+)[\s\n\r]+\((.|\n|\r)+\)
