@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.mds.dbtest.dao.TestDao;
 import ru.mds.dbtest.model.TestData;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +24,13 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 public class RealDbTest {
   @Autowired
-  private DataSource dataSource;
+  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
   private TestDao sut;
 
   @Before
   public void setUp() {
-    sut = new TestDao(new NamedParameterJdbcTemplate(dataSource));
+    sut = new TestDao(namedParameterJdbcTemplate);
   }
 
   @Test

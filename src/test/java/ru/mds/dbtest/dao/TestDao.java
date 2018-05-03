@@ -1,6 +1,8 @@
 package ru.mds.dbtest.dao;
 
 import lombok.AllArgsConstructor;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ru.mds.dbtest.model.TestData;
 
@@ -35,5 +37,19 @@ public class TestDao {
 
     return jdbcTemplate.query(query, params,
         (rs, rowNum) -> new TestData(rs.getInt(1), rs.getString(2)));
+  }
+
+  public List<Map<String, Object>> getAllData() {
+    String query = "SELECT COL1, COL2" +
+        " FROM IN_APP";
+
+    return jdbcTemplate.query(query, EmptySqlParameterSource.INSTANCE, new ColumnMapRowMapper());
+  }
+
+  public List<Map<String, Object>> getAllData2() {
+    String query = "SELECT COL1, COL2" +
+        " FROM IN_APP2";
+
+    return jdbcTemplate.query(query, EmptySqlParameterSource.INSTANCE, new ColumnMapRowMapper());
   }
 }
