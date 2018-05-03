@@ -18,13 +18,15 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
-
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
 
     // Lombok
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
+    runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testRuntimeOnly group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
