@@ -12,4 +12,5 @@ import lombok.Getter;
 public class Column {
   private final String name;
   private final String datatype;
+  private final boolean generated;
 }

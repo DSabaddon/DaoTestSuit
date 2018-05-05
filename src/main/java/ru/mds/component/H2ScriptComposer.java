@@ -1,6 +1,7 @@
 package ru.mds.component;
 
 import org.springframework.stereotype.Component;
+import ru.mds.model.Column;
 import ru.mds.model.Row;
 import ru.mds.model.TableDescription;
 
@@ -25,13 +26,25 @@ public class H2ScriptComposer {
           .append("CREATE TABLE ")
           .append(tableDescription.getName())
           .append(" (")
-          // TODO здесь ещё должны быть необходимые преобразования
-          .append(tableDescription.getColumns().stream()
-              .map(column -> column.getName() + " " + column.getDatatype())
-              .collect(Collectors.joining(",")))
+          .append(composeColumnsDefinition(tableDescription.getColumns()))
           .append("); ");
     }
     return createTablesScript.toString();
+  }
+
+  private String composeColumnsDefinition(List<Column> columns) {
+    return columns.stream()
+        .map(this::composeColumnDefinition)
+        .collect(Collectors.joining(","));
+  }
+
+  private String composeColumnDefinition(Column column) {
+    if (column.isGenerated()) {
+      // TODO обработка не стандартных процедур
+      return column.getName() + " VARCHAR2(256) AS " + column.getDatatype();
+    } else {
+      return column.getName() + " " + column.getDatatype();
+    }
   }
 
   String composeInsertScripts(List<Row> rows) {
