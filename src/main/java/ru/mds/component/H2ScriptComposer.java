@@ -6,6 +6,7 @@ import ru.mds.model.TableDescription;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +41,13 @@ public class H2ScriptComposer {
       StringBuilder values = new StringBuilder();
       for (Map.Entry data : row.getData().entrySet()) {
         columns.append(data.getKey()).append(",");
-        values.append(data.getValue()).append(",");
+        if (data.getValue() instanceof UUID) {
+          values.append("'").append(data.getValue().toString().replaceAll("-", "")).append("'").append(",");
+        } else if (data.getValue() instanceof String) {
+          values.append("'").append(data.getValue()).append("'").append(",");
+        } else {
+          values.append(data.getValue()).append(",");
+        }
       }
       columns.deleteCharAt(columns.length() - 1);
       values.deleteCharAt(values.length() - 1);
