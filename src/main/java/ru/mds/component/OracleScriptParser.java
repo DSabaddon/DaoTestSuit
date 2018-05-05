@@ -17,13 +17,23 @@ import static java.util.regex.Pattern.compile;
  */
 @Component
 public class OracleScriptParser {
-  private static final String DELIMITERS = "\\s*";
+  private static final String DELIMITER = "\\s";
+  private static final String DELS_POSSIBLE = DELIMITER + "*";
+  private static final String DELS_NECESSARILY = DELIMITER + "+";
 
-  private static final String COLUMN = "(\\w+)" + DELIMITERS + "(\\w+(?:\\(\\d+\\))?)";
-  private static final String COLUMNS = "(?:" + COLUMN + ",?" + DELIMITERS + ")+"; // TODO default value
+  /**
+   * слово | слово() | слово(число) | слово(число, число...)
+   */
+  private static final String DATATYPE = "\\w+(?:\\([\\d, ]+\\))?";
+  /**
+   * DEFAULT sysdate | sys_guid() | null | число
+   * TODO есть ещё DEFAULT RECHARGE_LINK_SEQ.nextval,
+   */
+  private static final String DEFAULT = "DEFAULT \\w+(?:\\(\\))?";
+  private static final String COLUMN = "(\\w+)" + DELS_NECESSARILY + "(" + DATATYPE + DELS_POSSIBLE + "(?:" + DEFAULT + ")?" + ")";
   private static final Pattern COLUMN_PATTERN = compile(COLUMN);
   private static final Pattern TABLE_PATTERN = compile(
-      "CREATE TABLE (\\w+) \\(" + DELIMITERS + "(" + COLUMNS + ")\\);"
+      "CREATE TABLE (\\w+) \\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)(?: TABLESPACE \\w+)?;"
   ); // todo партиционирование
 
   List<TableDescription> parseCreateTable(String oracleScript) {
