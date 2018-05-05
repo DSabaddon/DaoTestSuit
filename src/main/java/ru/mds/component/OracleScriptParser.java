@@ -53,14 +53,14 @@ public class OracleScriptParser {
       Matcher generatedColumnMatcher = GENERATED_COLUMN_PATTERN.matcher(columnsDefinition);
       while (generatedColumnMatcher.find()) {
         String columnName = generatedColumnMatcher.group(1).toUpperCase();
-        String columnDatatype = generatedColumnMatcher.group(2).toUpperCase();
+        String columnDatatype = generatedColumnMatcher.group(2);
         columns.add(new Column(columnName, columnDatatype, true));
       }
       columnsDefinition = columnsDefinition.replaceAll(GENERATED_COLUMN, "");
       Matcher columnMatcher = COLUMN_PATTERN.matcher(columnsDefinition);
       while (columnMatcher.find()) {
         String columnName = columnMatcher.group(1).toUpperCase();
-        String columnDatatype = columnMatcher.group(2).toUpperCase();
+        String columnDatatype = columnMatcher.group(2);
         columns.add(new Column(columnName, columnDatatype, false));
       }
       tableDescriptions.add(new TableDescription(tableName, columns));
