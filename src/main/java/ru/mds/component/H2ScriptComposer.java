@@ -7,6 +7,7 @@ import ru.mds.model.TableDescription;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -54,13 +55,7 @@ public class H2ScriptComposer {
       StringBuilder values = new StringBuilder();
       for (Map.Entry data : row.getData().entrySet()) {
         columns.append(data.getKey()).append(",");
-        if (data.getValue() instanceof UUID) {
-          values.append("'").append(data.getValue().toString().replaceAll("-", "")).append("'").append(",");
-        } else if (data.getValue() instanceof String) {
-          values.append("'").append(data.getValue()).append("'").append(",");
-        } else {
-          values.append(data.getValue()).append(",");
-        }
+        prepareValueAndAppend(data.getValue(), values);
       }
       columns.deleteCharAt(columns.length() - 1);
       values.deleteCharAt(values.length() - 1);
@@ -74,5 +69,20 @@ public class H2ScriptComposer {
           .append("); ");
     }
     return insertScript.toString();
+  }
+
+  private void prepareValueAndAppend(Object value, StringBuilder values) {
+    if (Objects.isNull(value)) {
+      values.append((Object) null);
+    } else if (value instanceof UUID) {
+      values.append("'").append(value.toString().replaceAll("-", "")).append("'");
+    } else if (value instanceof java.sql.Date) {
+      values.append("'").append(value.toString()).append("'");
+    } else if (value instanceof String) {
+      values.append("'").append(value).append("'");
+    } else {
+      values.append(value);
+    }
+    values.append(",");
   }
 }
