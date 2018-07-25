@@ -1,5 +1,5 @@
 group 'ru.mds.testsuit'
-version '0.1-SNAPSHOT'
+version '0.2-SNAPSHOT'
 
 buildscript {
     ext {
@@ -42,7 +42,7 @@ dependencies {
     // Lombok
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
-    runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.197'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'

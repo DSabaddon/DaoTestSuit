@@ -2,7 +2,6 @@ package ru.mds.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -23,7 +22,6 @@ public class CustomJdbcTemplate extends NamedParameterJdbcTemplate {
   @Autowired
   public CustomJdbcTemplate(DataSource dataSource) {
     super(dataSource);
-    ((JdbcTemplate) getJdbcOperations()).setNativeJdbcExtractor(new CustomJdbcExtractor());
   }
 
   private static final String operationWithParam = "[\\w()]+ [+-] :(\\w+)";

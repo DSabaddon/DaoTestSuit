@@ -961,6 +961,11 @@ class ProxyResultSet implements ResultSet {
 
   @Override
   public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
+    if (type.isEnum()) {
+      String value = delegate.getObject(columnLabel, String.class);
+      //noinspection unchecked
+      return value == null ? null : (T) Enum.valueOf((Class<? extends Enum>) type, value);
+    }
     return delegate.getObject(columnLabel, type);
   }
 
