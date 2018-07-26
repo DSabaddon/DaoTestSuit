@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  */
 @Component
 public class CustomJdbcTemplate extends NamedParameterJdbcTemplate {
-
   @Autowired
   public CustomJdbcTemplate(DataSource dataSource) {
     super(dataSource);

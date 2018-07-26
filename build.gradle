@@ -1,5 +1,5 @@
 group 'ru.mds.testsuit'
-version '0.2-SNAPSHOT'
+version '0.3'
 
 buildscript {
     ext {
