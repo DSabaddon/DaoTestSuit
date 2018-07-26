@@ -1,7 +1,8 @@
 package ru.ftc.pc.testing.dao.proxy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationHandler;
@@ -12,14 +13,10 @@ import java.sql.Connection;
  * @author maksimenko
  * @since 25.07.2018 (v1.0)
  */
-public class DataSourceDynamicInvocation implements InvocationHandler {
-  private static final Logger log = LoggerFactory.getLogger(DataSourceDynamicInvocation.class);
-
+@Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+class DataSourceDynamicInvocation implements InvocationHandler {
   private final DataSource dataSource;
-
-  public DataSourceDynamicInvocation(DataSource dataSource) {
-    this.dataSource = dataSource;
-  }
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {

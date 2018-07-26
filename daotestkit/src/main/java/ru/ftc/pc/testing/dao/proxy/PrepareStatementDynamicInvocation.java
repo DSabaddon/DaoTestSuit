@@ -1,7 +1,8 @@
 package ru.ftc.pc.testing.dao.proxy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,14 +13,10 @@ import java.sql.ResultSet;
  * @author maksimenko
  * @since 25.07.2018 (v1.0)
  */
+@Slf4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 class PrepareStatementDynamicInvocation implements InvocationHandler {
-  private static final Logger log = LoggerFactory.getLogger(PrepareStatementDynamicInvocation.class);
-
   private final PreparedStatement statement;
-
-  public PrepareStatementDynamicInvocation(PreparedStatement statement) {
-    this.statement = statement;
-  }
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {

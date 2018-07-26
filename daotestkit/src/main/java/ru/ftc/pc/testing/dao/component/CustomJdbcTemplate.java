@@ -19,18 +19,18 @@ import java.util.regex.Pattern;
  */
 @Primary
 @Component
-public class CustomJdbcTemplate extends NamedParameterJdbcTemplate {
+class CustomJdbcTemplate extends NamedParameterJdbcTemplate {
+  private static final String ARITHMETIC_OPERATION_WITH_PARAMETERIZED_OPERAND = "[\\w()]+ [+-] :(\\w+)";
+  private static final Pattern PATTERN = Pattern.compile(ARITHMETIC_OPERATION_WITH_PARAMETERIZED_OPERAND);// todo если несколько операций
+
   @Autowired
   public CustomJdbcTemplate(DataSource dataSource) {
     super(dataSource);
   }
 
-  private static final String operationWithParam = "[\\w()]+ [+-] :(\\w+)";
-  private static final Pattern pattern = Pattern.compile(operationWithParam);
-
   @Override
   public <T> List<T> query(String sql, SqlParameterSource paramSource, RowMapper<T> rowMapper) throws DataAccessException {
-    Matcher matcher = pattern.matcher(sql);
+    Matcher matcher = PATTERN.matcher(sql);
     // Этот ужас нужен, потому что H2 не умеет обрабатывать арифметические операции производимые с подстановочными переменными
     if (matcher.find()) {
       String value = paramSource.getValue(matcher.group(1)).toString();

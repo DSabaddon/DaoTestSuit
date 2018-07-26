@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @since 03.05.2018 (v1.0)
  */
 @Component
-public class H2ScriptComposer {
+class H2ScriptComposer {
   //<editor-fold desc="Drop & Create">
   String composeDropWithCreateTableScripts(List<TableDescription> descriptions) {
     StringBuilder createTablesScript = new StringBuilder();

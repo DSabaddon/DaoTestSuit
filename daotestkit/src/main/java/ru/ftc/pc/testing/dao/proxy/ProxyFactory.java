@@ -8,8 +8,8 @@ import java.lang.reflect.Proxy;
  * @author maksimenko
  * @since 25.07.2018 (v1.0)
  */
-public class ProxyFactory {
-  public static <T> Object createProxy(T object, Class<T> clazz, Class<? extends InvocationHandler> handlerClass)
+class ProxyFactory {
+  static <T> Object createProxy(T object, Class<T> clazz, Class<? extends InvocationHandler> handlerClass)
       throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
     InvocationHandler handler = handlerClass.getConstructor(clazz).newInstance(object);
 

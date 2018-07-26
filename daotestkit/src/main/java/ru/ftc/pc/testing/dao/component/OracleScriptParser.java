@@ -16,7 +16,7 @@ import static java.util.regex.Pattern.compile;
  * @since 30.04.2018 (v1.0)
  */
 @Component
-public class OracleScriptParser {
+class OracleScriptParser {
   private static final String DELIMITER = "\\s";
   private static final String DELS_POSSIBLE = DELIMITER + "*";
   private static final String DELS_NECESSARILY = DELIMITER + "+";
