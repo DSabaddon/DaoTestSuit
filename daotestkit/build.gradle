@@ -1,23 +1,24 @@
 group 'ru.ftc.pc.testing'
 version '0.4.1'
 
-//<editor-fold desc="Зависимости собираемого компонента">
-dependencyManagement {
-    dependencies {
-        dependencySet(group: 'org.springframework', version: '5.0.7.RELEASE') {
-            entry 'spring-context'
-            entry 'spring-beans'
-            entry 'spring-jdbc'
-        }
+//<editor-fold desc="Конфигурация скрипта сборки">
+buildscript {
+    ext {
+        springVersion = '5.0.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="Зависимости собираемого компонента">
 dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
-    compile group: 'org.springframework', name: 'spring-context'
-    compile group: 'org.springframework', name: 'spring-beans'
-    compile group: 'org.springframework', name: 'spring-jdbc'
+    compile group: 'org.springframework', name: 'spring-context', version: "${springVersion}"
+    compile group: 'org.springframework', name: 'spring-beans', version: "${springVersion}"
+    compile group: 'org.springframework', name: 'spring-jdbc', version: "${springVersion}"
 
     // Для управления пулом коннектов к БД. (!) Эта зависимость не активирует поддержку работы с БД.
     compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.5.29'
