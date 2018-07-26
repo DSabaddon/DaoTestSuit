@@ -4,8 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
-        classpath group: 'gradle.plugin.com.gorylenko.gradle-git-properties', name: 'gradle-git-properties', version: '1.5.1'
+        classpath group: 'io.spring.gradle', name: 'dependency-management-plugin', version: '1.0.6.RELEASE'
     }
 }
 //</editor-fold>
@@ -15,7 +14,6 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'idea'                                // Для правильного формирования модулей в IDEA
     apply plugin: 'io.spring.dependency-management'     // Для возможности использовать dependencyManagement
-    apply plugin: 'com.gorylenko.gradle-git-properties' // Для сбора и включения Git-информации в сборку
 
     //<editor-fold desc="Подсказки компилятору">
     sourceCompatibility = 1.8
@@ -46,7 +44,7 @@ allprojects {
 
 //<editor-fold desc="Конфигурация корневого проекта">
 jar {
-    /* Корневой проект не предназначен для выпуска в виде дистрибутива.*/
+    // Корневой проект не предназначен для выпуска в виде дистрибутива.
     enabled = false
 }
 //</editor-fold>

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DaoTestKitRunner" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="runner_main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="ru.ftc.pc.testing.dao.DaoTestKitRunner" />
+    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method />
+  </configuration>
+</component>
