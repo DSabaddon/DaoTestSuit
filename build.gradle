@@ -1,60 +1,52 @@
-group 'ru.mds.testsuit'
-version '0.3'
-
+//<editor-fold desc="Конфигурация корневого скрипта сборки">
 buildscript {
-    ext {
-        springBootVersion = '2.0.3.RELEASE'
-        springCloudVersion = 'Finchley.RELEASE'
-    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "${springBootVersion}"
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
         classpath group: 'gradle.plugin.com.gorylenko.gradle-git-properties', name: 'gradle-git-properties', version: '1.5.1'
     }
 }
+//</editor-fold>
 
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'     // Для авто-подстановки версий Spring-компонентов
+//<editor-fold desc="Конфигурация всех модулей проекта">
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'                                // Для правильного формирования модулей в IDEA
+    apply plugin: 'io.spring.dependency-management'     // Для возможности использовать dependencyManagement
+    apply plugin: 'com.gorylenko.gradle-git-properties' // Для сбора и включения Git-информации в сборку
 
-repositories {
-    mavenCentral()
-}
+    //<editor-fold desc="Подсказки компилятору">
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+    //</editor-fold>
 
-// зависимость для авто-подстановки версий компонентов Spring Cloud
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    // Настройки проекта в IDEA
+    idea {
+        module {
+            excludeDirs += files('log', '.idea', 'description', 'gradle')
+        }
     }
+
+    //<editor-fold desc="Зависимости собираемого компонента">
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // Lombok
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
+    }
+    //</editor-fold>
 }
+//</editor-fold>
 
-dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
-
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
-
-    // Для управления пулом коннектов к БД. (!) Эта зависимость не активирует поддержку работы с БД.
-    compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.5.29'
-
-    // Lombok
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
-
-    compile group: 'com.h2database', name: 'h2', version: '1.4.197'
-
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
-    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
-    testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.2.0'
-}
-
+//<editor-fold desc="Конфигурация корневого проекта">
 jar {
-    /* Применение плагина 'org.springframework.boot' выключает задачу jar и та становится
-     холостой (ничего не делает). Вероятно, это следствие рефакторинга плагина:
-     https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide#building-executable-jars-and-wars
-     Из-за этого сборка всех зависимых подпроектов ломается, так как они не могут найти нужные им классы. Чтобы этого
-     избежать, задача jar включается принудительно. */
-    enabled = true
+    /* Корневой проект не предназначен для выпуска в виде дистрибутива.*/
+    enabled = false
 }
+//</editor-fold>

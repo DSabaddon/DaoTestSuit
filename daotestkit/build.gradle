@@ -1,0 +1,27 @@
+group 'ru.ftc.pc.testing'
+version '0.4'
+
+//<editor-fold desc="Зависимости собираемого компонента">
+dependencyManagement {
+    dependencies {
+        dependencySet(group: 'org.springframework', version: '5.0.7.RELEASE') {
+            entry 'spring-context'
+            entry 'spring-beans'
+            entry 'spring-jdbc'
+        }
+    }
+}
+
+dependencies {
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    compile group: 'org.springframework', name: 'spring-context'
+    compile group: 'org.springframework', name: 'spring-beans'
+    compile group: 'org.springframework', name: 'spring-jdbc'
+
+    // Для управления пулом коннектов к БД. (!) Эта зависимость не активирует поддержку работы с БД.
+    compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.5.29'
+
+    runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+}
+//</editor-fold>

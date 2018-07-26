@@ -1,0 +1,38 @@
+//<editor-fold desc="Конфигурация скрипта сборки">
+buildscript {
+    ext {
+        springBootVersion = '2.0.3.RELEASE'
+        junitVersion = '5.2.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "${springBootVersion}"
+    }
+}
+//</editor-fold>
+
+apply plugin: 'org.springframework.boot' // Для поддержки сборки Spring Boot приложений
+// org.springframework.boot + io.spring.dependency-management = авто-подстановка версий Spring-компонентов
+
+//<editor-fold desc="Зависимости собираемого компонента">
+dependencies {
+    compile project(':daotestkit')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
+
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitVersion}"
+    // Для запуска JUnit5 тестов
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitVersion}"
+    // Для запуска JUnit4 тестов ранером для JUnit5
+    testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: "${junitVersion}"
+}
+//</editor-fold>
+
+test {
+    // Включение JUnit5 тестов
+    useJUnitPlatform()
+}

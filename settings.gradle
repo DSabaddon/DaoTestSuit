@@ -1,1 +1,4 @@
-rootProject.name = 'DaoTestSuit'
+rootProject.name = 'Daoist'
+
+include 'daotestkit'
+include 'runner'
