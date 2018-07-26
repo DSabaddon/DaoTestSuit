@@ -28,9 +28,9 @@ public class OracleScriptParser {
   private static final Pattern GENERATED_COLUMN_PATTERN = compile(GENERATED_COLUMN);
 
   /**
-   * слово | слово() | слово(число) | слово(число, число...)
+   * слово | слово() | слово(число) | слово(число слово) | слово(число, число...)
    */
-  private static final String DATATYPE = "\\w+(?:\\([\\d, ]+\\))?";
+  private static final String DATATYPE = "\\w+(?:\\([\\da-zA-Z, ]+\\))?";
   /**
    * DEFAULT sysdate | sys_guid() | null | число
    * TODO есть ещё DEFAULT RECHARGE_LINK_SEQ.nextval,

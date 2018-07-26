@@ -21,13 +21,12 @@ class ResultSetDynamicInvocation implements InvocationHandler {
   }
 
   @Override
-  public Object invoke(Object proxy, Method method, Object[] args)
-      throws Throwable {
+  public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
     log.info("Invoked method: {}", method.getName());
 
     if (method.getName().equals("getObject")) {
-      Class type = (Class) args[0];
-      String columnLabel = (String) args[1];
+      String columnLabel = (String) args[0];
+      Class type = (Class) args[1];
       if (type.isEnum()) {
         String value = resultSet.getObject(columnLabel, String.class);
         //noinspection unchecked

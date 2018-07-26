@@ -1,6 +1,7 @@
 package ru.ftc.pc.testing.dao.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
  * @author MDS
  * @since 22.05.2018 (v1.0)
  */
+@Primary
 @Component
 public class CustomJdbcTemplate extends NamedParameterJdbcTemplate {
   @Autowired

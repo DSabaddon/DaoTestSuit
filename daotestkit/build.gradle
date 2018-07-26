@@ -1,5 +1,5 @@
 group 'ru.ftc.pc.testing'
-version '0.4'
+version '0.4.1'
 
 //<editor-fold desc="Зависимости собираемого компонента">
 dependencyManagement {
