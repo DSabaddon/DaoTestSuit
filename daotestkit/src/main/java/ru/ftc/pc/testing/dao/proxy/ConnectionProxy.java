@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * @author maksimenko
@@ -15,17 +15,17 @@ import java.sql.ResultSet;
  */
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class PrepareStatementDynamicInvocation implements InvocationHandler {
-  private final PreparedStatement statement;
+class ConnectionProxy implements InvocationHandler {
+  private final Connection connection;
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
-    log.info("Invoked method: {}", method.getName());
+    log.trace("Через прокси вызван метод: {}", method.getName());
 
-    if (method.getName().equals("executeQuery")) {
-      return ProxyFactory.createProxy((ResultSet) method.invoke(statement, args), ResultSet.class, ResultSetDynamicInvocation.class);
+    if (method.getName().equals("prepareStatement")) {
+      return ProxyFactory.createProxy((PreparedStatement) method.invoke(connection, args), PreparedStatement.class, PrepareStatementProxy.class);
     }
 
-    return method.invoke(statement, args);
+    return method.invoke(connection, args);
   }
 }

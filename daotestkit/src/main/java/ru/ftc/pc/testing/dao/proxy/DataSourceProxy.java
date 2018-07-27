@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.sql.DataSource;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 /**
  * @author maksimenko
@@ -15,17 +15,17 @@ import java.sql.PreparedStatement;
  */
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class ConnectionDynamicInvocation implements InvocationHandler {
-  private final Connection connection;
+class DataSourceProxy implements InvocationHandler {
+  private final DataSource dataSource;
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
-    log.info("Invoked method: {}", method.getName());
+    log.trace("Через прокси вызван метод: {}", method.getName());
 
-    if (method.getName().equals("prepareStatement")) {
-      return ProxyFactory.createProxy((PreparedStatement) method.invoke(connection, args), PreparedStatement.class, PrepareStatementDynamicInvocation.class);
+    if (method.getName().equals("getConnection")) {
+      return ProxyFactory.createProxy((Connection) method.invoke(dataSource, args), Connection.class, ConnectionProxy.class);
     }
 
-    return method.invoke(connection, args);
+    return method.invoke(dataSource, args);
   }
 }

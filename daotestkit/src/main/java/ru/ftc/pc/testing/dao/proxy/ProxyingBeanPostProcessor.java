@@ -18,7 +18,8 @@ public class ProxyingBeanPostProcessor implements BeanPostProcessor {
   public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
     if (bean instanceof DataSource) {
       try {
-        return ProxyFactory.createProxy((DataSource) bean, DataSource.class, DataSourceDynamicInvocation.class);
+        log.debug("Модифицируем DataSource");
+        return ProxyFactory.createProxy((DataSource) bean, DataSource.class, DataSourceProxy.class);
       } catch (Exception e) {
         log.error("Не удалось создать proxy: ", e);
       }

@@ -24,15 +24,16 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    // API для написания тестов
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitVersion}"
-    // Для запуска JUnit5 тестов
+    // Для запуска только JUnit5 тестов
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitVersion}"
-    // Для запуска JUnit4 тестов ранером для JUnit5
+    // Для запуска JUnit4 тестов вместе с JUnit5
     testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: "${junitVersion}"
 }
 //</editor-fold>
 
 test {
-    // Включение JUnit5 тестов
+    // По умолчанию поддержка JUnit5 тестов выключена, поэтому включаем её явно
     useJUnitPlatform()
 }

@@ -1,5 +1,5 @@
 group 'ru.ftc.pc.testing'
-version '0.4.1'
+version '0.4.2'
 
 //<editor-fold desc="Конфигурация скрипта сборки">
 buildscript {

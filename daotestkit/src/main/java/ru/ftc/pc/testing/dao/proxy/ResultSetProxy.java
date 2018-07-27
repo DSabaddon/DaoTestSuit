@@ -14,17 +14,18 @@ import java.sql.ResultSet;
  */
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class ResultSetDynamicInvocation implements InvocationHandler {
+class ResultSetProxy implements InvocationHandler {
   private final ResultSet resultSet;
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
-    log.info("Invoked method: {}", method.getName());
+    log.trace("Через прокси вызван метод: {}", method.getName());
 
     if (method.getName().equals("getObject")) {
       String columnLabel = (String) args[0];
       Class type = (Class) args[1];
       if (type.isEnum()) {
+        log.debug("Преобразуем значение из колонки '{}' в Enum '{}'", columnLabel, type.getName());
         String value = resultSet.getObject(columnLabel, String.class);
         //noinspection unchecked
         return value == null ? null : Enum.valueOf((Class<? extends Enum>) type, value);

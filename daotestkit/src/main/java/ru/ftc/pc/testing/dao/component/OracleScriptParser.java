@@ -43,6 +43,13 @@ class OracleScriptParser {
       "CREATE TABLE (\\w+) \\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)(?: TABLESPACE \\w+)?;"
   ); // todo партиционирование
 
+  /**
+   * Парсинг скрипта, в котором создаются таблицы<br/>
+   * todo Проверить разбор BLOB
+   *
+   * @param oracleScript SQL cкрипт для СУБД Oracle, в котором создаются таблицы
+   * @return список описаний таблиц
+   */
   List<TableDescription> parseCreateTable(String oracleScript) {
     List<TableDescription> tableDescriptions = new ArrayList<>();
     Matcher tableMatcher = TABLE_PATTERN.matcher(oracleScript);
