@@ -36,7 +36,7 @@ public class DatabaseInitializer {
     execute(h2script);
   }
 
-  private void execute(String query) {
+  void execute(String query) {
     jdbcTemplate.update(query, EmptySqlParameterSource.INSTANCE);
   }
 
