@@ -31,7 +31,7 @@ class H2ScriptComposer {
           .append(tableDescription.getName())
           .append(" (")
           .append(composeColumnsDefinition(tableDescription.getColumns()))
-          .append("); ");
+          .append(");\n");
     }
     return createTablesScript.toString();
   }
@@ -43,13 +43,17 @@ class H2ScriptComposer {
   }
 
   private String composeColumnDefinition(Column column) {
-    if (column.isGenerated()) {
+    String name = column.getName();
+    String datatype = column.getDatatype();
+    String defaultValue = column.getDefaultValue() == null ? "" : " " + column.getDefaultValue();
+
+    if (column.isVirtual()) {
       // TODO обработка не стандартных процедур
-      return column.getName() + " VARCHAR2(256) AS " + column.getDatatype();
-    } else if (column.getDatatype().contains("DATE")) {
-      return column.getName() + " " + column.getDatatype().replace("DATE", "TIMESTAMP");
+      return name + " VARCHAR2(256) AS " + datatype + defaultValue;
+    } else if (datatype.contains("DATE")) {
+      return name + " " + datatype.replace("DATE", "TIMESTAMP") + defaultValue;
     } else {
-      return column.getName() + " " + column.getDatatype();
+      return name + " " + datatype + defaultValue;
     }
   }
   //</editor-fold>

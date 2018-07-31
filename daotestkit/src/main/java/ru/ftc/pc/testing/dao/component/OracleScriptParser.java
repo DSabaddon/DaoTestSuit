@@ -38,7 +38,7 @@ class OracleScriptParser {
    * TODO есть ещё DEFAULT RECHARGE_LINK_SEQ.nextval,
    */
   private static final String DEFAULT = "DEFAULT \\w+(?:\\(\\))?";
-  private static final String COLUMN = "(\\w+)" + DELS_NECESSARILY + "(" + DATATYPE + DELS_POSSIBLE + "(?:" + DEFAULT + ")?" + ")";
+  private static final String COLUMN = "(\\w+)" + DELS_NECESSARILY + "(" + DATATYPE + ")" + DELS_POSSIBLE + "(" + DEFAULT + ")?";
   private static final Pattern COLUMN_PATTERN = compile(COLUMN);
 
   private static final Pattern TABLE_PATTERN = compile(
@@ -59,19 +59,27 @@ class OracleScriptParser {
       List<Column> columns = new ArrayList<>();
       String tableName = tableMatcher.group(1).toUpperCase();
       String columnsDefinition = tableMatcher.group(2);
+
+      //<editor-fold desc="Обработка виртуальных колонок">
       Matcher generatedColumnMatcher = GENERATED_COLUMN_PATTERN.matcher(columnsDefinition);
       while (generatedColumnMatcher.find()) {
         String columnName = generatedColumnMatcher.group(1).toUpperCase();
         String columnDatatype = generatedColumnMatcher.group(2);
-        columns.add(new Column(columnName, columnDatatype, true));
+        columns.add(new Column(columnName, columnDatatype, true, null));
       }
+      //</editor-fold>
       columnsDefinition = columnsDefinition.replaceAll(GENERATED_COLUMN, "");
+
+      //<editor-fold desc="Обработка обычных колонок">
       Matcher columnMatcher = COLUMN_PATTERN.matcher(columnsDefinition);
       while (columnMatcher.find()) {
         String columnName = columnMatcher.group(1).toUpperCase();
         String columnDatatype = columnMatcher.group(2);
-        columns.add(new Column(columnName, columnDatatype, false));
+        String defaultValue = columnMatcher.group(3);
+        columns.add(new Column(columnName, columnDatatype, false, defaultValue));
       }
+      //</editor-fold>
+
       tableDescriptions.add(new TableDescription(tableName, columns));
       log.debug("Сформировано описание таблицы '{}'", tableName);
     }
