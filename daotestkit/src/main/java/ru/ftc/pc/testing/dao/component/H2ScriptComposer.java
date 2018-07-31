@@ -5,6 +5,8 @@ import ru.ftc.pc.testing.dao.model.Column;
 import ru.ftc.pc.testing.dao.model.Row;
 import ru.ftc.pc.testing.dao.model.TableDescription;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +46,8 @@ class H2ScriptComposer {
     if (column.isGenerated()) {
       // TODO обработка не стандартных процедур
       return column.getName() + " VARCHAR2(256) AS " + column.getDatatype();
+    } else if (column.getDatatype().contains("DATE")) {
+      return column.getName() + " " + column.getDatatype().replace("DATE", "TIMESTAMP");
     } else {
       return column.getName() + " " + column.getDatatype();
     }
@@ -79,7 +83,9 @@ class H2ScriptComposer {
       values.append((Object) null);
     } else if (value instanceof UUID) {
       values.append("'").append(value.toString().replaceAll("-", "")).append("'");
-    } else if (value instanceof java.sql.Date) {
+    } else if (value instanceof LocalDate ||
+        value instanceof java.sql.Date ||
+        value instanceof LocalDateTime) {
       values.append("'").append(value.toString()).append("'");
     } else if (value instanceof String) {
       values.append("'").append(value).append("'");

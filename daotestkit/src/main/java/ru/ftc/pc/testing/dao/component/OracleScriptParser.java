@@ -1,5 +1,6 @@
 package ru.ftc.pc.testing.dao.component;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.ftc.pc.testing.dao.model.Column;
 import ru.ftc.pc.testing.dao.model.TableDescription;
@@ -15,6 +16,7 @@ import static java.util.regex.Pattern.compile;
  * @author MDS
  * @since 30.04.2018 (v1.0)
  */
+@Slf4j
 @Component
 class OracleScriptParser {
   private static final String DELIMITER = "\\s";
@@ -40,7 +42,7 @@ class OracleScriptParser {
   private static final Pattern COLUMN_PATTERN = compile(COLUMN);
 
   private static final Pattern TABLE_PATTERN = compile(
-      "CREATE TABLE (\\w+) \\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)(?: TABLESPACE \\w+)?;"
+      "CREATE TABLE (\\w+)" + DELS_POSSIBLE + "\\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)(?: TABLESPACE \\w+)?;"
   ); // todo партиционирование
 
   /**
@@ -71,6 +73,7 @@ class OracleScriptParser {
         columns.add(new Column(columnName, columnDatatype, false));
       }
       tableDescriptions.add(new TableDescription(tableName, columns));
+      log.debug("Сформировано описание таблицы '{}'", tableName);
     }
     return tableDescriptions;
   }
