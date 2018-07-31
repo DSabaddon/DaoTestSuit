@@ -1,5 +1,6 @@
 package ru.ftc.pc.testing.dao.component;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.ftc.pc.testing.dao.model.Column;
 import ru.ftc.pc.testing.dao.model.Row;
@@ -11,14 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * @author MDS
  * @since 03.05.2018 (v1.0)
  */
+@Slf4j
 @Component
 class H2ScriptComposer {
+  private static final Pattern PROCEDURE_PATTERN = Pattern.compile("\\w+\\((\\w+)\\)");
+
   //<editor-fold desc="Drop & Create">
   String composeDropWithCreateTableScripts(List<TableDescription> descriptions) {
     StringBuilder createTablesScript = new StringBuilder();
@@ -46,9 +52,17 @@ class H2ScriptComposer {
     String name = column.getName();
     String datatype = column.getDatatype();
     String defaultValue = column.getDefaultValue() == null ? "" : " " + column.getDefaultValue();
+    if (defaultValue.contains("nextval")) {
+      defaultValue = "DEFAULT 1104";
+      log.debug("Заменяем '{}' на '{}' для колонки '{}'", column.getDefaultValue(), defaultValue, name);
+    }
 
     if (column.isVirtual()) {
-      // TODO обработка не стандартных процедур
+      Matcher procedureMatcher = PROCEDURE_PATTERN.matcher(datatype);
+      if (procedureMatcher.find()) {
+        log.debug("Заменяем '{}' на '{}' для колонки '{}'", datatype, procedureMatcher.group(1), name);
+        datatype = procedureMatcher.group(1);
+      }
       return name + " VARCHAR2(256) AS " + datatype + defaultValue;
     } else if (datatype.contains("DATE")) {
       return name + " " + datatype.replace("DATE", "TIMESTAMP") + defaultValue;

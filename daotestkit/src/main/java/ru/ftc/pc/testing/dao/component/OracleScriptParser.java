@@ -34,16 +34,17 @@ class OracleScriptParser {
    */
   private static final String DATATYPE = "\\w+(?:\\([\\da-zA-Z, ]+\\))?";
   /**
-   * DEFAULT sysdate | sys_guid() | null | число
-   * TODO есть ещё DEFAULT RECHARGE_LINK_SEQ.nextval,
+   * DEFAULT sysdate | sys_guid() | null | число | seq.nextval | seq.nextval()
    */
-  private static final String DEFAULT = "DEFAULT \\w+(?:\\(\\))?";
+  private static final String DEFAULT = "DEFAULT [\\w.]+(?:\\(\\))?";
   private static final String COLUMN = "(\\w+)" + DELS_NECESSARILY + "(" + DATATYPE + ")" + DELS_POSSIBLE + "(" + DEFAULT + ")?";
   private static final Pattern COLUMN_PATTERN = compile(COLUMN);
 
+  private static final String PARTITION_BY = "(?:" + DELS_POSSIBLE + "PARTITION BY (?:RANGE|LIST) [\\s\\S]+?)?";
+  private static final String TABLESPACE = "(?:" + DELS_POSSIBLE + "TABLESPACE \\w+)?";
   private static final Pattern TABLE_PATTERN = compile(
-      "CREATE TABLE (\\w+)" + DELS_POSSIBLE + "\\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)(?: TABLESPACE \\w+)?;"
-  ); // todo партиционирование
+      "CREATE TABLE (\\w+)" + DELS_POSSIBLE + "\\(" + DELS_POSSIBLE + "([\\s\\S]*?)" + "\\)" + PARTITION_BY + TABLESPACE + ";"
+  );
 
   /**
    * Парсинг скрипта, в котором создаются таблицы<br/>
