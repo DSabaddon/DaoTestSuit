@@ -91,7 +91,7 @@ class H2ScriptComposer {
           .append(columns)
           .append(") VALUES (")
           .append(values)
-          .append("); ");
+          .append(");\n");
     }
     return insertScript.toString();
   }
@@ -105,6 +105,8 @@ class H2ScriptComposer {
         value instanceof java.sql.Date ||
         value instanceof LocalDateTime) {
       values.append("'").append(value.toString()).append("'");
+    } else if (value.getClass().isEnum()) {
+      values.append("'").append(((Enum) value).name()).append("'");
     } else if (value instanceof String) {
       values.append("'").append(value).append("'");
     } else {
