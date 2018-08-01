@@ -1,5 +1,8 @@
 //<editor-fold desc="Конфигурация корневого скрипта сборки">
 buildscript {
+    ext {
+        junitVersion = '5.2.0'
+    }
     repositories {
         mavenCentral()
     }
@@ -37,8 +40,20 @@ allprojects {
     dependencies {
         // Lombok
         compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
+
+        // API для написания тестов
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitVersion}"
+        // Для запуска только JUnit5 тестов
+        testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitVersion}"
+        // Для запуска JUnit4 тестов вместе с JUnit5
+        testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: "${junitVersion}"
     }
     //</editor-fold>
+
+    test {
+        // По умолчанию поддержка JUnit5 тестов выключена, поэтому включаем её явно
+        useJUnitPlatform()
+    }
 }
 //</editor-fold>
 

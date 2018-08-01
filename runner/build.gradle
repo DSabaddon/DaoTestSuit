@@ -2,7 +2,6 @@
 buildscript {
     ext {
         springBootVersion = '2.0.3.RELEASE'
-        junitVersion = '5.2.0'
     }
     repositories {
         mavenCentral()
@@ -23,17 +22,9 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
 
+    // Actuator - для предоставления SpringBoot bean'ов в jmx, а также для работы с bean'ами по http
+    runtime group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    // API для написания тестов
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${junitVersion}"
-    // Для запуска только JUnit5 тестов
-    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${junitVersion}"
-    // Для запуска JUnit4 тестов вместе с JUnit5
-    testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: "${junitVersion}"
 }
 //</editor-fold>
-
-test {
-    // По умолчанию поддержка JUnit5 тестов выключена, поэтому включаем её явно
-    useJUnitPlatform()
-}

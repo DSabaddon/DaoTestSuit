@@ -96,14 +96,12 @@ class H2ScriptComposer {
     return insertScript.toString();
   }
 
-  private void prepareValueAndAppend(Object value, StringBuilder values) {
+  void prepareValueAndAppend(Object value, StringBuilder values) {
     if (Objects.isNull(value)) {
       values.append((Object) null);
     } else if (value instanceof UUID) {
       values.append("'").append(value.toString().replaceAll("-", "")).append("'");
-    } else if (value instanceof LocalDate ||
-        value instanceof java.sql.Date ||
-        value instanceof LocalDateTime) {
+    } else if (value instanceof LocalDate || value instanceof LocalDateTime) {
       values.append("'").append(value.toString()).append("'");
     } else if (value.getClass().isEnum()) {
       values.append("'").append(((Enum) value).name()).append("'");
