@@ -7,8 +7,8 @@ import lombok.Getter;
  * @author MDS
  * @since 01.05.2018 (v1.0)
  */
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class Column {
   private final String name;
   private final String datatype;

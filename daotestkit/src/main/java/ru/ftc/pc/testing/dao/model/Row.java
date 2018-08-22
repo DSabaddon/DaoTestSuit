@@ -10,13 +10,13 @@ import java.util.Map;
  * @author MDS
  * @since 03.05.2018 (v1.0)
  */
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class Row {
   private final String tableName;
   private final Map<String, Object> data = new HashMap<>();
 
-  public Row add(String column, Object value) {
+  public Row withColumn(String column, Object value) {
     data.put(column, value);
     return this;
   }
