@@ -51,6 +51,8 @@ class PreliminaryParameterResolverJdbcTemplate extends NamedParameterJdbcTemplat
     log.trace("Пытаемся преобразовать переменные, участвующие в арифметических операциях");
     Matcher matcher = OPERAND_PATTERN.matcher(sql);
 
+    // todo вот тут лимит править надо
+
     while (matcher.find()) {
       String value = paramSource.getValue(matcher.group(1)).toString();
       sql = sql.replaceAll(":" + matcher.group(1), value);

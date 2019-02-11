@@ -63,7 +63,7 @@ class H2ScriptComposer {
         log.debug("Заменяем '{}' на '{}' для колонки '{}'", datatype, procedureMatcher.group(1), name);
         datatype = procedureMatcher.group(1);
       }
-      return name + " VARCHAR2(256) AS " + datatype + defaultValue;
+      return name + " VARCHAR2(256) AS " + datatype + defaultValue; // todo бред: default всегда нет, а datatype - это значение
     } else if (datatype.contains("DATE")) {
       return name + " " + datatype.replace("DATE", "TIMESTAMP") + defaultValue;
     } else {

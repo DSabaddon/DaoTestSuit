@@ -3,6 +3,7 @@ package ru.ftc.pc.testing.dao.proxy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -20,8 +21,8 @@ class ResultSetProxy implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
     log.trace("Через прокси вызван метод: {}", method.getName());
-
-    if (method.getName().equals("getObject")) {
+// todo беда, если колонка называется limit!
+    if (isSuitableMethod(method)) {
       String columnLabel = (String) args[0];
       Class type = (Class) args[1];
       if (type.isEnum()) {
@@ -32,5 +33,17 @@ class ResultSetProxy implements InvocationHandler {
       }
     }
     return method.invoke(resultSet, args);
+  }
+
+  /**
+   * Проверяет, является ли метод тем самым, который нужно преобразовывать.
+   * Руками для преобразования Enum мы вызываем {@link ResultSet#getObject(String, Class)}. Только для него нужно особое поведение.<br/>
+   * {@link BeanPropertyRowMapper} для преобразования Enum вызывает {@link ResultSet#getObject(int)}. Так что не все getObject одинаково хороши...
+   */
+  private boolean isSuitableMethod(Method method) {
+    return method.getName().equals("getObject")
+        && method.getParameterCount() == 2
+        && method.getParameterTypes()[0] == String.class
+        && method.getParameterTypes()[1] == Class.class;
   }
 }
