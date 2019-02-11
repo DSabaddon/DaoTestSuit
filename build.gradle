@@ -28,7 +28,7 @@ allprojects {
     // Настройки проекта в IDEA
     idea {
         module {
-            excludeDirs += files('log', '.idea', 'gradle')
+            excludeDirs += files('log', '.idea')
         }
     }
 

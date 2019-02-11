@@ -1,4 +1,5 @@
 rootProject.name = 'Daoist'
 
 include 'daotestkit'
+include 'starter'
 include 'runner'

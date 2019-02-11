@@ -1,0 +1,32 @@
+group 'ru.ftc.pc.testing'
+version '0.1'
+
+//<editor-fold desc="Конфигурация скрипта сборки">
+buildscript {
+    ext {
+        springBootVersion = '2.0.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "${springBootVersion}"
+    }
+}
+//</editor-fold>
+
+apply plugin: 'org.springframework.boot' // Для поддержки сборки Spring Boot приложений
+// org.springframework.boot + io.spring.dependency-management = авто-подстановка версий Spring-компонентов
+
+//<editor-fold desc="Зависимости собираемого компонента">
+dependencies {
+    compile project(':daotestkit')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+}
+//</editor-fold>
+
+jar {
+    enabled = true
+    baseName = 'daotestkit-starter'
+}
