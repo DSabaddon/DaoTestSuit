@@ -1,4 +1,4 @@
-group 'ru.ftc.pc.testing'
+group 'ru.mds.testing'
 version '0.6'
 
 //<editor-fold desc="Конфигурация скрипта сборки">
