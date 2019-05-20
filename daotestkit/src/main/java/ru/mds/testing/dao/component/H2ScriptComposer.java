@@ -8,10 +8,7 @@ import ru.mds.testing.dao.model.TableDescription;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -101,7 +98,7 @@ class H2ScriptComposer {
       values.append((Object) null);
     } else if (value instanceof UUID) {
       values.append("'").append(value.toString().replaceAll("-", "")).append("'");
-    } else if (value instanceof LocalDate || value instanceof LocalDateTime) {
+    } else if (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date) {
       values.append("'").append(value.toString()).append("'");
     } else if (value.getClass().isEnum()) {
       values.append("'").append(((Enum) value).name()).append("'");
