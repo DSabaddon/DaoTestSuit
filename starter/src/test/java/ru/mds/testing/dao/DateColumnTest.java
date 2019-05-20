@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import ru.mds.testing.dao.model.Row;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +46,21 @@ class DateColumnTest extends AbstractDaoTest {
     assertTrue(secondTimeResult.isPresent());
     assertEquals(FULL_NAME_VALUE, secondTimeResult.get().fullName);
     assertEquals(date, secondTimeResult.get().birthDate);
+  }
+
+  @Test
+  void insertByInitializer() {
+    Date date = Date.valueOf(LocalDate.of(2993, 9, 4));
+
+    databaseInitializer.insertRows(Collections.singletonList(
+        new Row("PERSON")
+            .withColumn("FULL_NAME", FULL_NAME_VALUE)
+            .withColumn("BIRTH_DATE", date)));
+
+    Optional<Person> result = sut.findBy(FULL_NAME_VALUE);
+    assertTrue(result.isPresent());
+    assertEquals(FULL_NAME_VALUE, result.get().fullName);
+    assertEquals(date, result.get().birthDate);
   }
 
   @Repository
