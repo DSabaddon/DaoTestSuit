@@ -32,7 +32,7 @@ class H2ScriptComposer {
       createTablesScript
           .append("DROP TABLE IF EXISTS ")
           .append(tableDescription.getName())
-          .append(";")
+          .append(" CASCADE;")
           .append("CREATE TABLE ")
           .append(tableDescription.getName())
           .append(" (")

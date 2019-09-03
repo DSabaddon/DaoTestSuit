@@ -23,6 +23,6 @@ dependencies {
     // Для управления пулом коннектов к БД. (!) Эта зависимость не активирует поддержку работы с БД.
     compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '8.5.29'
 
-    runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+    runtime group: 'com.h2database', name: 'h2', version: '1.4.199'
 }
 //</editor-fold>
