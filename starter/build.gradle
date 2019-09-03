@@ -1,5 +1,5 @@
 group 'ru.mds.testing'
-version '0.2'
+version '0.1'
 
 //<editor-fold desc="Конфигурация скрипта сборки">
 buildscript {
