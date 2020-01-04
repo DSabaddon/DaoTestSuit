@@ -11,6 +11,7 @@ import ru.mds.testing.dao.model.TableDescription;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,6 +35,10 @@ public class DatabaseInitializer {
   public void insertRows(List<Row> rows) {
     String h2script = h2ScriptComposer.composeInsertScripts(rows);
     execute(h2script);
+  }
+
+  public void insertRows(Row... rows) {
+    insertRows(Arrays.asList(rows));
   }
 
   void execute(String query) {
