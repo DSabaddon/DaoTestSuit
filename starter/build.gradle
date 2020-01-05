@@ -23,6 +23,10 @@ dependencies {
     compile project(':daotestkit')
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    //Пришлось явно указать нужную версию зависимость здесь отдельно, т.к.
+    //транзитивно подтягивается старая версия (1.9.197)
+    compile group: 'com.h2database', name: 'h2', version: '1.4.199'
 }
 //</editor-fold>
 
