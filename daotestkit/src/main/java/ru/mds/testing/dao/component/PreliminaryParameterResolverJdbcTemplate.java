@@ -49,6 +49,30 @@ class PreliminaryParameterResolverJdbcTemplate extends NamedParameterJdbcTemplat
   @Override
   public <T> List<T> query(String sql, SqlParameterSource paramSource, RowMapper<T> rowMapper) throws DataAccessException {
     log.trace("Пытаемся преобразовать переменные, участвующие в арифметических операциях");
+    sql = parseSqlString(sql, paramSource);
+    return super.query(sql, paramSource, rowMapper);
+  }
+
+  /**
+   * @implNote <b>H2</b> не умеет обрабатывать арифметические операции, у которых один операнд <b>дата</b>, а другой - <b>подстановочная переменная</b>.
+   * Например, "<code>sysdate + :SEVRAL_DAYS</code>". Это выражение превращается в "<code>?1 + sysdate</code>"
+   * и дальше выбрасывается исключение "<code>JdbcSQLException: Неизвестный тип данных: "?"</code>".<br/>
+   * Ошибка кроется вот здесь: {@code org.h2.expression.Operation#optimize(org.h2.engine.Session)}.<br/>
+   * Поэтому заранее подставляем значения для переменных, участвующих в арифметических операциях.<br/>
+   * P.S.: "<code>INTEGER - TIMESTAMP</code>" не поддерживается, поэтому писать <code>:SEVRAL_DAYS + sysdate</code> нельзя.
+   */
+  @Override
+  public int[] batchUpdate(String sql, SqlParameterSource[] batchArgs) {
+    log.trace("Пытаемся преобразовать переменные, участвующие в арифметических операциях");
+
+    for (SqlParameterSource source : batchArgs) {
+      sql = parseSqlString(sql, source);
+    }
+
+    return super.batchUpdate(sql, batchArgs);
+  }
+
+  private String parseSqlString(String sql, SqlParameterSource paramSource) {
     Matcher matcher = OPERAND_PATTERN.matcher(sql);
 
     // todo вот тут лимит править надо
@@ -58,6 +82,6 @@ class PreliminaryParameterResolverJdbcTemplate extends NamedParameterJdbcTemplat
       sql = sql.replaceAll(":" + matcher.group(1), value);
       log.debug("Заменяем переменную '{}' на '{}'", matcher.group(1), value);
     }
-    return super.query(sql, paramSource, rowMapper);
+    return sql;
   }
 }
